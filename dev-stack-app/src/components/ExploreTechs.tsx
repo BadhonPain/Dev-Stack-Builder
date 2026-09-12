@@ -3,6 +3,7 @@ import type { TechStack } from '../types/techStack';
 import { techStackData } from '../data/techStackInfo';
 import YourStack from './YourStack';
 import TechCard from './TechCard';
+import { toast } from 'react-toastify';
 
 
 interface ExploreTechsProps {
@@ -15,24 +16,56 @@ const ExploreTechs = ({ technologies = techStackData }: ExploreTechsProps) => {
 
     // Ensuring one tech stack per category
     const handleToggleTech = (tech: TechStack) => {
-        const isAlreadyInStack = selectedStack.some((item) => item.id === tech.id);
+        const isAlreadySelected = selectedStack.some(
+            (item) => item.id === tech.id
+        );
 
-        if (isAlreadyInStack) {
-            setSelectedStack(selectedStack.filter((item) => item.id !== tech.id));
-        } else {
-            const remainingStack = selectedStack.filter((item) => item.category !== tech.category);
-            setSelectedStack([...remainingStack, tech]);
+        if (isAlreadySelected) {
+            toast.warning(`${tech.name} is already in your stack.`);
+            return;
         }
+
+        const existingCategoryTech = selectedStack.find(
+            (item) => item.category === tech.category
+        );
+
+        if (existingCategoryTech) {
+            toast.info(
+                `${existingCategoryTech.name} was replaced with ${tech.name}.`
+            );
+
+            setSelectedStack((prevStack) => [
+                ...prevStack.filter(
+                    (item) => item.category !== tech.category
+                ),
+                tech,
+            ]);
+
+            return;
+        }
+
+        toast.success(`${tech.name} added to your stack.`);
+
+        setSelectedStack((prevStack) => [...prevStack, tech]);
     };
 
     // Remove a single item from the stack
     const handleRemoveFromStack = (techId: string) => {
-        setSelectedStack(selectedStack.filter((item) => item.id !== techId));
+        const removedTech = selectedStack.find((item) => item.id === techId);
+
+        setSelectedStack((prevStack) =>
+            prevStack.filter((item) => item.id !== techId)
+        );
+
+        if (removedTech) {
+            toast.success(`${removedTech.name} removed from your stack.`);
+        }
     };
 
     // Clear all items from the stack
     const handleRemoveAll = () => {
         setSelectedStack([]);
+        toast.success('All technologies removed from your stack.');
     };
 
     return (
