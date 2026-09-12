@@ -5,6 +5,32 @@ const Footer = () => {
         <footer className="bg-white border-t border-gray-100 mt-20">
             <div className="max-w-7xl mx-auto px-6 py-12">
 
+                {/* Mobile View*/}
+                <div className="md:hidden flex flex-col items-center text-center">
+                    <a href="#home">
+                        <img src={Logo} alt="DevStack Logo" className="h-8 w-auto" />
+                    </a>
+
+                    <p className="mt-4 text-sm text-[#64748B] leading-relaxed max-w-xs">
+                        Curated tools, technologies, and resources for developers building modern software.
+                    </p>
+
+                    <div className="flex items-center justify-center gap-3 mt-4 text-sm font-medium text-[#64748B]">
+                        <a href="https://github.com/BadhonPain" target="_blank" rel="noreferrer" className="hover:text-[#db2777] transition-colors">
+                            GitHub
+                        </a>
+                        <span className="text-gray-400">•</span>
+                        <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-[#db2777] transition-colors">
+                            Twitter
+                        </a>
+                        <span className="text-gray-400">•</span>
+                        <a href="https://www.linkedin.com/in/badhon-pain-634341378/" target="_blank" rel="noreferrer" className="hover:text-[#db2777] transition-colors">
+                            LinkedIn
+                        </a>
+                    </div>
+                </div>
+
+                {/* PC view */}
                 <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
                     {/* Brand Info */}
                     <div className="lg:col-span-2">
