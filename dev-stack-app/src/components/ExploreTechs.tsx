@@ -1,17 +1,27 @@
-import { useState } from 'react';
+import { Suspense, use, useState } from 'react';
 import type { TechStack } from '../types/techStack';
-import { techStackData } from '../data/techStackInfo';
+import { getTechStackPromise } from '../data/techStackInfo';
 import YourStack from './YourStack';
 import TechCard from './TechCard';
 import { toast } from 'react-toastify';
 
-
-interface ExploreTechsProps {
+export interface ExploreTechsProps {
     technologies?: TechStack[];
 }
 
+export const LoadingFallback = () => (
+    <div className="max-w-7xl mx-auto px-6 py-20 text-center flex flex-col items-center justify-center min-h-87.5">
+        <div className="w-12 h-12 border-4 border-[#8B5CF6] border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-xl sm:text-2xl font-bold text-[#0F172A] tracking-wider animate-pulse">
+            Loading.....
+        </p>
+        <p className="text-sm text-[#64748B] mt-2">Fetching technology stack data...</p>
+    </div>
+);
 
-const ExploreTechs = ({ technologies = techStackData }: ExploreTechsProps) => {
+const ExploreTechsContent = ({ technologies }: ExploreTechsProps) => {
+    const fetchedTechs = technologies ? null : use(getTechStackPromise());
+    const techList = technologies ?? fetchedTechs ?? [];
     const [selectedStack, setSelectedStack] = useState<TechStack[]>([]);
 
     // Ensuring one tech stack per category
@@ -87,7 +97,7 @@ const ExploreTechs = ({ technologies = techStackData }: ExploreTechsProps) => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
 
                 <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {technologies.map((tech) => (
+                    {techList.map((tech) => (
                         <TechCard
                             key={tech.id}
                             tech={tech}
@@ -106,6 +116,14 @@ const ExploreTechs = ({ technologies = techStackData }: ExploreTechsProps) => {
                 </div>
             </div>
         </section>
+    );
+};
+
+const ExploreTechs = (props: ExploreTechsProps) => {
+    return (
+        <Suspense fallback={<LoadingFallback />}>
+            <ExploreTechsContent {...props} />
+        </Suspense>
     );
 };
 

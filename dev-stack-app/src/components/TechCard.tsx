@@ -45,11 +45,11 @@ const TechCard = ({ tech, isSelected, onToggle }: TechCardProps) => {
             <button
                 onClick={() => onToggle(tech)}
                 className={`mt-6 w-full py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${isSelected
-                    ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
+                    ? 'bg-pink-200 text-pink-500 hover:bg-pink-50 border border-pink-200'
                     : 'bg-[#0F172A] hover:bg-[#1E293B] text-white'
                     }`}
             >
-                {isSelected ? 'Remove from Stack' : 'Add to Stack'}
+                {isSelected ? 'Added to Stack' : 'Add to Stack'}
             </button>
         </div>
     );

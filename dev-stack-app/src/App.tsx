@@ -1,16 +1,19 @@
 import Nav from './components/Nav';
 import Banner from './components/Banner';
-import ExploreTechs from './components/ExploreTechs';
+import ExploreTechs, { LoadingFallback } from './components/ExploreTechs';
 import Footer from './components/Footer';
 import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Suspense } from 'react';
 
 function App() {
   return (
     <>
       <Nav />
       <Banner />
-      <ExploreTechs />
+      <Suspense fallback={<LoadingFallback/>}>
+        <ExploreTechs />
+      </Suspense>
       <Footer />
 
       <ToastContainer
@@ -24,10 +27,10 @@ function App() {
         draggable
         pauseOnHover
         theme="dark"
-        transition= {Bounce}
+        transition={Bounce}
       />
     </>
   );
 }
 
-export default App
+export default App;
